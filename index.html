@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSS Envelope + Letter (Open/Close on Click)</title>
+    <style>
+.container1 {
+    display: flex; /* Usa flexbox para centrar contenido */
+    flex-direction: column; /* Apila los elementos verticalmente */
+    justify-content: center; /* Centra verticalmente */
+    align-items: center; /* Centra horizontalmente */
+    height: 100%; /* Asegúrate de que ocupe todo el espacio disponible */
+}
+        button {
+    background-color: transparent; /* Fondo transparente */
+    color: rgb(0, 0, 0); /* Texto en blanco */
+    border: 2px solid white; /* Borde blanco */
+    padding: 20px 20px; /* Espaciado interno */
+    font-family: 'Arial', sans-serif; /* Fuente simple y moderna */
+    font-size: 16px; /* Tamaño de texto */
+    border-radius: 25px; /* Bordes redondeados */
+    cursor: pointer; /* Cambia el cursor al pasar el ratón */
+    transition: all 0.3s ease; /* Animación suave al interactuar */
+}
+
+button:hover {
+    background-color: white; /* Fondo blanco al pasar el ratón */
+    color: black; /* Texto negro para contraste */
+    transform: scale(1.1); /* Efecto de zoom */
+}
+
+button:active {
+    transform: scale(1.05); /* Reducir el zoom al hacer clic */
+    opacity: 0.8; /* Disminuir opacidad temporal */
+}
+.arrow {
+            margin-top: 10px; /* Espacio respecto al botón */
+            color: rgb(0, 0, 0); /* Color de la flecha */
+            font-size: 24px; /* Tamaño de la flecha */
+            animation: bounce 1.5s infinite; /* Animación de rebote */
+        }
+
+        /* Animación de la flecha hacia arriba */
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {
+                transform: translateY(0);
+            }
+            40% {
+                transform: translateY(10px); /* Mover hacia abajo */
+            }
+            60% {
+                transform: translateY(5px); /* Mover hacia abajo un poco menos */
+            }
+        }
+        #particles-js {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    background: #000;
+}
+        :root {
+            --primary: #fff;
+            --bg-color: rgb(0, 0, 0);
+            --bg-envelope-color: #f5edd1;
+            --envelope-tab: #ecdeb8;
+            --envelope-cover: #e6cfa7;
+            --shadow-color: rgba(0, 0, 0, 0.2);
+            --txt-color: #444;
+            --heart-color: rgb(19, 18, 18);
+        }
+        
+        body {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            background: var(--bg-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .container {
+            height: 100vh;
+            display: grid;
+            place-items: center;
+        }
+        .container > .envelope-wrapper {
+            background: var(--bg-envelope-color);
+            box-shadow: 0 0 40px var(--shadow-color);
+        }
+        .envelope-wrapper > .envelope {
+            position: relative;
+            width: 300px;
+            height: 230px;
+        }
+        .envelope-wrapper > .envelope::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            z-index: 2;
+            border-top: 130px solid var(--envelope-tab);
+            border-right: 150px solid transparent;
+            border-left: 150px solid transparent;
+            transform-origin: top;
+            transition: all 0.5s ease-in-out 0.7s;
+        }
+        .envelope-wrapper > .envelope::after {
+            content: "";
+            position: absolute;
+            z-index: 2;
+            width: 0px;
+            height: 0px;
+            border-top: 130px solid transparent;
+            border-right: 150px solid var(--envelope-cover);
+            border-bottom: 100px solid var(--envelope-cover);
+            border-left: 150px solid var(--envelope-cover);
+        }
+        .envelope > .letter {
+            position: absolute;
+            right: 20%;
+            bottom: 0;
+            width: 54%;
+            height: 80%;
+            background: var(--primary);
+            text-align: center;
+            transition: all 1s ease-in-out;
+            box-shadow: 0 0 5px var(--shadow-color);
+            padding: 20px 10px;
+        }
+        .envelope > .letter > .text {
+            font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+            color: var(--txt-color);
+            text-align: left;
+            font-size: 10px;
+        }
+        .heart {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 15px;
+            height: 15px;
+            background: var(--heart-color);
+            z-index: 4;
+            transform: translate(-50%, -20%) rotate(45deg);
+            transition: transform 0.5s ease-in-out 1s;
+            box-shadow: 0 1px 6px var(--shadow-color);
+            cursor: pointer;
+        }
+        .heart:before,
+        .heart:after {
+            content: "";
+            position: absolute;
+            width: 15px;
+            height: 15px;
+            background-color: var(--heart-color);
+            border-radius: 50%;
+        }
+        .heart:before {
+            top: -7.5px;
+        }
+        .heart:after {
+            right: 7.5px;
+        }
+        .flap > .envelope:before {
+            transform: rotateX(180deg);
+            z-index: 0;
+        }
+        .flap > .envelope > .letter {
+            bottom: 100px;
+            transform: scale(1.5);
+            transition-delay: 1s;
+        }
+        .flap > .heart {
+            transform: rotate(90deg);
+            transition-delay: 0.4s;
+        }
+        
+    </style>
+</head>
+<div id="particles-js"></div>
+
+<script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+<script>
+particlesJS('particles-js', {
+    particles: {
+        number: { value: 50 },
+        color: { value: '#fff' },
+        shape: { type: 'circle' },
+        opacity: { value: 0.5 },
+        size: { value: 3 },
+        move: { enable: true, speed: 1 }
+    }
+});
+</script>
+<body>
+    <div class="container">
+        <div class="envelope-wrapper">
+            <div class="envelope">
+                <div class="letter">
+                    <div class="text">
+                        <strong>Mmm buenos días</strong>
+                        <p>
+                            Como estas?
+                        </p>
+                        <div class="container1">
+                            <button onclick="redirectToInstagram()">PRESS</button>
+                            <div class="arrow">↑</div>
+                        </div>
+                    </div>
+                </div>
+            </div>  
+            <div class="heart"></div>
+        </div>
+    </div>
+    <audio autoplay loop style="display: none;">
+        <source src="https://www.youtube.com/watch?v=SB2R9xnyhQE" type="audio/mpeg">
+    </audio>
+    <script>
+        const envelope = document.querySelector('.envelope-wrapper');
+        envelope.addEventListener('click', () => {
+            envelope.classList.toggle('flap');
+        });
+        function redirectToInstagram() {
+            window.location.href = 'https://www.instagram.com/direct/t/108154853914800?hl=es-la';
+        }
+    </script>
+</body>
+</html>
